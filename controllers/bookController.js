@@ -32,8 +32,6 @@ const add_book = async (req,res)=>{
             about:req.body.about
         });
     try{
-        console.log("dsjkasd");
-        console.log(req.body.name);
       const savedBook = await book_detail.save();
       res.send(savedBook);
     }
@@ -44,11 +42,32 @@ const add_book = async (req,res)=>{
 };
 //update book
 const update_book = async (req,res)=>{
+const book_detail = {             
+            name:req.body.name,
+            price:req.body.price,
+            auther:req.body.auther,
+            total_page:req.body.total_page,
+            about:req.body.about
+        };
+    try{
+      const updatedBook = await Book.findByIdAndUpdate({_id:req.params.bookId},book_detail);
+      res.json(updatedBook);
+    }
+    catch(error){
+     res.status(400).send(error);
+    }
 
 }
 //delete book
 const delete_book= async (req,res)=>{
-
+    try{
+        const removeBook = await Book.findByIdAndDelete(req.params.bookId);
+        res.json(removeBook
+            );
+    }
+    catch(error){
+        res.json({messge:error});
+    }
 }
 
 module.exports={
